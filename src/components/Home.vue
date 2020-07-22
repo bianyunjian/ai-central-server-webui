@@ -42,7 +42,10 @@
         </div>
       </el-aside>
       <el-main id="main-container">
-        <div class="default-div">欢迎使用化平台</div>
+        <!-- <div class="default-div">欢迎使用化平台</div> -->
+        <router-view />
+
+
       </el-main>
     </el-container>
     <!-- <el-footer height="30px">{{footerInfo}}</el-footer> -->

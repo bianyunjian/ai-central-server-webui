@@ -26,7 +26,7 @@ window.MENU_CONFIG = [
             {
                 index: "2-1",
                 name: "摄像头列表",
-                routeName: "deviceList",
+                routeName: "CameraNamage",
 
             },
             {

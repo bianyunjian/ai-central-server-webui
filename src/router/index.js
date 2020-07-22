@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import Login from '@/components/Login'
 import Home from '@/components/Home'
+import CameraManage from '@/components/CameraManage'
 Vue.use(Router)
 
 export default new Router({
@@ -16,6 +17,23 @@ export default new Router({
       path: '/Home',
       name: 'Home',
       component: Home,
+      children: [
+        {
+          path: '/Home/camera',
+          name: 'CameraNamage',
+          component: CameraManage
+        }
+        // ,
+        // {
+        //   path: '/cameraManage',
+        //   name: 'CameraManage',
+        //   components:
+        //   {
+        //     containerRouteView4Child: CameraManage
+        //   }
+        // }
+        
+      ]
     },
     {
       path: '/login',
@@ -23,4 +41,5 @@ export default new Router({
       component: Login,
     }
   ]
+
 })
