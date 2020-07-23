@@ -10,12 +10,7 @@ window.MENU_CONFIG = [
                 name: "设备列表",
                 routeName: "DeviceManage",
 
-            },
-            // {
-            //     index: "1-2",
-            //     name: "设备数据",
-            //     routeName: "deviceData",
-            // }
+            }
         ]
     },
     {
@@ -28,12 +23,7 @@ window.MENU_CONFIG = [
                 name: "摄像头列表",
                 routeName: "CameraManage",
 
-            },
-            // {
-            //     index: "2-2",
-            //     name: "摄像头数据",
-            //     routeName: "deviceData",
-            // }
+            }
         ]
     },
     {
@@ -44,7 +34,7 @@ window.MENU_CONFIG = [
             {
                 index: "3-1",
                 name: "算法匹配",
-                routeName: ""
+                routeName: "AiConfigManage"
             }
         ]
     },
@@ -56,7 +46,7 @@ window.MENU_CONFIG = [
             {
                 index: "4-1",
                 name: "人脸库管理",
-                routeName: ""
+                routeName: "FaceManage"
             }
         ]
     },
@@ -68,12 +58,12 @@ window.MENU_CONFIG = [
             {
                 index: "5-1",
                 name: "实时数据查询",
-                routeName: ""
+                routeName: "RealtimeDataTable"
             },
             {
                 index: "5-2",
                 name: "历史数据查询",
-                routeName: ""
+                routeName: "HistoryDataTable"
             }
         ]
     }

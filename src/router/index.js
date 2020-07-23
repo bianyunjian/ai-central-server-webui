@@ -5,6 +5,10 @@ import Login from '@/components/Login'
 import Home from '@/components/Home'
 import CameraManage from '@/components/CameraManage'
 import DeviceManage from '@/components/DeviceManage'
+import AiConfigManage from '@/components/AiConfigManage'
+import FaceManage from '@/components/FaceManage'
+import RealtimeDataTable from '@/components/RealtimeDataTable'
+import HistoryDataTable from '@/components/HistoryDataTable'
 Vue.use(Router)
 
 
@@ -39,6 +43,26 @@ export default new Router({
           path: '/Home/device',
           name: 'DeviceManage',
           component: DeviceManage
+        },
+        {
+          path: '/Home/ai',
+          name: 'AiConfigManage',
+          component: AiConfigManage
+        },
+        {
+          path: '/Home/face',
+          name: 'FaceManage',
+          component: FaceManage
+        },
+        {
+          path: '/Home/realtime',
+          name: 'RealtimeDataTable',
+          component: RealtimeDataTable
+        },
+        {
+          path: '/Home/history',
+          name: 'HistoryDataTable',
+          component: HistoryDataTable
         }
       ]
     },
