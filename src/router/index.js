@@ -4,7 +4,19 @@ import Router from 'vue-router'
 import Login from '@/components/Login'
 import Home from '@/components/Home'
 import CameraManage from '@/components/CameraManage'
+import DeviceManage from '@/components/DeviceManage'
 Vue.use(Router)
+
+
+/**
+ * 解决element-ui导航栏中的vue-router在3.0版本以上重复点菜单报错问题
+ * 报错内容如下：
+ * Avoided redundant navigation to current location: "/Home/device"
+ */
+ const originalPush = Router.prototype.push
+Router.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 export default new Router({
   routes: [
@@ -20,19 +32,14 @@ export default new Router({
       children: [
         {
           path: '/Home/camera',
-          name: 'CameraNamage',
+          name: 'CameraManage',
           component: CameraManage
+        },
+        {
+          path: '/Home/device',
+          name: 'DeviceManage',
+          component: DeviceManage
         }
-        // ,
-        // {
-        //   path: '/cameraManage',
-        //   name: 'CameraManage',
-        //   components:
-        //   {
-        //     containerRouteView4Child: CameraManage
-        //   }
-        // }
-        
       ]
     },
     {
