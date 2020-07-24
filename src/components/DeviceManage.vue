@@ -32,7 +32,7 @@
               {{ scenarioFormat(scope.row.deviceScenario) }}
             </template>
           </el-table-column>
-          <el-table-column prop="desc" label="描述"></el-table-column>
+          <el-table-column prop="description" label="描述"></el-table-column>
           <el-table-column label="操作" width="100">
             <template slot-scope="scope">
               <el-link type="primary" @click="updateDevice(scope.row)" style="margin-right:10px;">修改</el-link>
@@ -88,9 +88,9 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item prop="desc" label="描述">
+        <el-form-item prop="description" label="描述">
           <el-input
-            v-model="editForm.desc"
+            v-model="editForm.description"
             autocomplete="off"
             type="textarea" :rows="3"
             placeholder="设备相关描述"
@@ -117,14 +117,14 @@ export default {
         id: 1,
         name: 'D001',
         status: 0,
-        deviceScenario: 1,
-        desc: '三楼实验室'
+        deviceScenario: '1',
+        description: '三楼实验室'
       },{
         id: 2,
         name: 'D002',
         status: 1,
-        deviceScenario: 2,
-        desc: '三楼实验室'
+        deviceScenario: '2',
+        description: '三楼实验室'
       }],
       tableQuery: {
         name: ''
@@ -144,7 +144,7 @@ export default {
         name: '',
         status: 0,
         deviceScenario: null,
-        desc: ''
+        description: ''
       },
       editFormRules: {
         name: [
@@ -162,9 +162,9 @@ export default {
         {value: 1, label: '离线'}
       ],
       scenarioEnum: [
-        {value: 0, label: '未知'},
-        {value: 1, label: '中型物流护士站点'},
-        {value: 2, label: '气力式垃圾站点投递口'}
+        {value: '0', label: '未知'},
+        {value: '1', label: '中型物流护士站点'},
+        {value: '2', label: '气力式垃圾站点投递口'}
       ]
     }
   },
@@ -194,13 +194,13 @@ export default {
       let message = ''
       if (null != scenario) {
         switch (scenario) {
-          case 0:
+          case '0':
             message = '未知'
             break
-          case 1:
+          case '1':
             message = '中型物流护士站点'
             break
-          case 2:
+          case '2':
             message = '气力式垃圾站点投递口'
             break
           default:
@@ -216,7 +216,7 @@ export default {
           pageSize: self.tablePage.pageSize
         },
         queryParams: {
-          //todo 这里需要增加名称参数
+          name: self.tableQuery.name
         }
       }
       deviceService.queryDevice(data).then(res => {
@@ -240,7 +240,6 @@ export default {
       this.editDialog.visible = true
     },
     updateDevice(row) {
-      //todo
       this.editDialog.title = '修改设备'
       this.editDialog.type = 'update'
       this.resetEditForm()
@@ -249,7 +248,7 @@ export default {
         name: row.name,
         status: row.status,
         deviceScenario: row.deviceScenario,
-        desc: row.desc
+        description: row.description
       }
       this.editDialog.visible = true
     },
@@ -263,7 +262,7 @@ export default {
         name: '',
         status: 0,
         deviceScenario: null,
-        desc: ''
+        description: ''
       }
     },
     deleteDevice(row) {
@@ -298,7 +297,7 @@ export default {
           self.editDialog.visible = false
           let data = {
             name: self.editForm.name,
-            statis: self.editForm.status,
+            status: self.editForm.status,
             scenario: self.editForm.deviceScenario,
             description: self.editForm.description
           }
@@ -329,7 +328,7 @@ export default {
           let data = {
             id: self.editForm.id,
             name: self.editForm.name,
-            statis: self.editForm.status,
+            status: self.editForm.status,
             scenario: self.editForm.deviceScenario,
             description: self.editForm.description
           }
