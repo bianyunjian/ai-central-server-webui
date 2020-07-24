@@ -23,7 +23,7 @@
           <el-table-column prop="name" label="名称"></el-table-column>
           <el-table-column prop="rtsp" label="RTSP地址"></el-table-column>
           <el-table-column prop="axCameraNumber" label="艾信匹配编号" width="120"></el-table-column>
-          <el-table-column prop="desc" label="描述"></el-table-column>
+          <el-table-column prop="description" label="描述"></el-table-column>
           <el-table-column label="操作" width="100">
             <template slot-scope="scope">
               <el-link type="primary" @click="updateCamera(scope.row)" style="margin-right:10px;">修改</el-link>
@@ -62,15 +62,16 @@
           ></el-input>
         </el-form-item>
         <el-form-item prop="axCameraNumber" label="艾信匹配编号">
-          <el-input
+          <el-input-number style="width:100%;"
             v-model="editForm.axCameraNumber"
-            autocomplete="off"
             placeholder="输入艾信指定对应编号"
-          ></el-input>
+            :min="1" :step="1"
+            controls-position="right"
+          ></el-input-number>
         </el-form-item>
-        <el-form-item prop="desc" label="描述">
+        <el-form-item prop="description" label="描述">
           <el-input
-            v-model="editForm.desc"
+            v-model="editForm.description"
             autocomplete="off"
             type="textarea" :rows="2"
             placeholder="摄像头相关描述"
@@ -107,19 +108,19 @@ export default {
         name: 'camera1',
         rtsp: '',
         axCameraNumber: '1',
-        desc: '测试相机1'
+        description: '测试相机1'
       },{
         id: '2',
         name: 'camera2',
         rtsp: '',
         axCameraNumber: '3',
-        desc: '测试相机2'
+        description: '测试相机2'
       },{
         id: '3',
         name: 'camera3',
         rtsp: '',
         axCameraNumber: '2',
-        desc: '测试相机3'
+        description: '测试相机3'
       }],
       tableQuery: {
         name: ''
@@ -139,7 +140,7 @@ export default {
         name: '',
         rtsp: '',
         axCameraNumber: '',
-        desc: ''
+        description: ''
       },
       editFormRules: {
         name: [
@@ -168,7 +169,7 @@ export default {
           pageSize: self.tablePage.pageSize
         },
         queryParams: {
-          //todo 这里需要增加名称参数
+          name: self.tableQuery.name
         }
       }
       cameraService.queryCamera(data).then(res => {
@@ -200,7 +201,7 @@ export default {
         name: row.name,
         rtsp: row.rtsp,
         axCameraNumber: row.axCameraNumber,
-        desc: row.desc
+        description: row.description
       }
       this.editDialog.visible = true
     },
@@ -236,7 +237,7 @@ export default {
         name: '',
         rtsp: '',
         axCameraNumber: '',
-        desc: ''
+        description: ''
       }
     },
     doAdd() {
@@ -244,11 +245,11 @@ export default {
       this.$refs['cameraForm'].validate((valid) => {
         if (valid) {
           self.editDialog.visible = false
-          //todo 这里新增的数据需要补全
           let data = {
             name: self.editForm.name,
             rtsp: self.editForm.rtsp,
-            axCameraNumber: self.editForm.axCameraNumber
+            axCameraNumber: self.editForm.axCameraNumber,
+            description: self.editForm.description
           }
           cameraService.addCamera(data).then(res => {
             if (res.status === 'SUCCESS') {
@@ -273,12 +274,12 @@ export default {
       this.$refs['cameraForm'].validate((valid) => {
         if (valid) {
           self.editDialog.visible = false
-          //todo 这里修改的数据需要补全
           let data = {
             id: self.editForm.id,
             name: self.editForm.name,
             rtsp: self.editForm.rtsp,
-            axCameraNumber: self.editForm.axCameraNumber
+            axCameraNumber: self.editForm.axCameraNumber,
+            description: self.editForm.description
           }
           cameraService.updateCamera(data).then(res => {
             if (res.status === 'SUCCESS') {
