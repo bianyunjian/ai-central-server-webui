@@ -19,7 +19,7 @@
       </el-header>
       <el-main>
         <el-table :data="tableData" border style="width:100%;">
-          <el-table-column prop="id" label="编号" width="70"></el-table-column>
+          <!-- <el-table-column prop="id" label="编号" width="70"></el-table-column> -->
           <el-table-column prop="deviceName" label="设备名称"></el-table-column>
           <el-table-column prop="cameraName" label="摄像头名称"></el-table-column>
           <el-table-column prop="aiTypeArray" label="算法配置"></el-table-column>
@@ -43,8 +43,8 @@
       </el-footer>
     </el-container>
 
-    <el-dialog :title="editDialog.title" :visible.sync="editDialog.visible" width="360px">
-      <el-form :model="editForm" ref="configForm" :rules="editFormRules" label-width="60px">
+    <el-dialog :title="editDialog.title" :visible.sync="editDialog.visible" width="380px">
+      <el-form :model="editForm" ref="configForm" :rules="editFormRules" label-width="80px">
         <el-form-item prop="deviceId" label="设备">
           <el-select style="width:100%;"
             v-model="editForm.deviceId"
@@ -107,6 +107,8 @@
   </div>
 </template>
 <script>
+import configService from '@/api/aiConfig'
+
 export default {
   name: 'AiConfigManage',
   data() {
@@ -158,7 +160,17 @@ export default {
       aiList: [
         {value: 1, label: ''}
       ],
-      editFormRules: {},
+      editFormRules: {
+        deviceId: [
+          {required: true, message: '必选项', trigger: 'change'}
+        ],
+        cameraId: [
+          {required: true, message: '必选项', trigger: 'change'}
+        ],
+        aiTypeArray: [
+          {required: true, message: '必选项', trigger: 'change'}
+        ]
+      },
     }
   },
   mounted() {
@@ -174,32 +186,53 @@ export default {
           pageSize: self.tablePage.pageSize
         },
         queryParams: {
-          //todo 这里需要增加名称参数
+          name: self.tableQuery.name
         }
       }
-      // deviceService.queryDevice(data).then(res => {
-      //   if (res.errorCode == 0) {
-      //     self.tableData = res.data.list
-      //     self.tablePage.total = res.data.total
-      //   }
-      // }).catch(err => {
-      //   console.log('查询设备列表出错,data='+JSON.stringify(data))
-      //   console.log(err)
-      // })
+      configService.queryTable(data).then(res => {
+        if (res.errorCode == 0) {
+          self.tableData = res.data.list
+          self.tablePage.total = res.data.total
+        }
+      }).catch(err => {
+        console.log('查询算法配置列表出错,data='+JSON.stringify(data))
+        console.log(err)
+      })
     },
     changePage(page) {
       this.tablePage.pageNum = page
       this.refreshTable()
     },
     addConfig() {
-      this.editDialog.title = '新增配置'
-      this.editDialog.type = 'add'
-      this.resetEditForm()
-      this.editDialog.visible = true
+      // 从后台获取未配置的设备与相机
+      let self = this
+      configService.getFormData().then(res => {
+        if (res.status === 'SUCCESS') {
+          console.log('获取下拉列表成功')
+          self.deviceList = res.data.deviceOptions
+          self.cameraList = res.data.cameraOptions
+          // 打开界面
+          this.editDialog.title = '新增配置'
+          this.editDialog.type = 'add'
+          this.resetEditForm()
+          this.editDialog.visible = true
+        } else {
+          self.showErrorMessage(res.errorCode)
+        }
+      }).catch(err => {
+        console.log('获取设备与相机下拉选出错')
+        console.log(err)
+      })
     },
     updateConfig(row) {
       this.editDialog.title = '修改配置'
       this.editDialog.type = 'update'
+      this.deviceList = [
+        {value: row.deviceId, label: row.deviceName}
+      ]
+      this.cameraList = [
+        {value: row.cameraId, label: row.cameraName}
+      ]
       this.resetEditForm()
       let aiArray = row.aiTypeArray.split(',')
       this.editForm = {
@@ -208,12 +241,9 @@ export default {
         cameraId: row.cameraId,
         aiTypeArray: aiArray
       }
-      console.log('edit Form ：')
-      console.log(this.editForm)
       this.editDialog.visible = true
     },
     resetEditForm() {
-      //todo 从后台获取未配置的设备与相机
       // 移除表单验证结果
       this.$nextTick(() => {
         this.$refs.configForm.clearValidate()
@@ -226,7 +256,6 @@ export default {
       }
     },
     deleteConfig(row) {
-      
       let self = this
       let message = '是否确定删除该配置？'
       this.$confirm(message, '请确认', {
@@ -234,43 +263,91 @@ export default {
         cancelButtonText: '取消',
         type: 'error'
       }).then(() => {
-        //todo
-        alert('删除配置')
-        // let data = {id: row.id}
-        // deviceService.deleteDevice(data).then(res => {
-        //   if (res.status === 'SUCCESS') {
-        //     self.$message({
-        //       message: '删除设备成功!',
-        //       type: 'success'
-        //     })
-        //     self.refreshTable()
-        //   } else {
-        //     self.showErrorMessage(res.errorCode)
-        //   }
-        // }).catch(err => {
-        //   console.log('删除设备出错,data='+JSON.stringify(data))
-        //   console.log(err)
-        // })
+        let data = {id: row.id}
+        configService.deleteData(data).then(res => {
+          if (res.status === 'SUCCESS') {
+            self.$message({
+              message: '删除算法配置成功!',
+              type: 'success'
+            })
+            self.refreshTable()
+          } else {
+            self.showErrorMessage(res.errorCode)
+          }
+        }).catch(err => {
+          console.log('删除算法配置出错,data='+JSON.stringify(data))
+          console.log(err)
+        })
       })
     },
     doAdd() {
-      //todo 
-      alert('新增配置')
+      let self = this
+      this.$refs['configForm'].validate((valid) => {
+        if (valid) {
+          self.editDialog.visible = false
+          let data = {
+            deviceId: self.editForm.deviceId,
+            cameraId: self.editForm.cameraId,
+            aiTypeArray: self.editForm.aiTypeArray
+          }
+          configService.addData(data).then(res => {
+            if (res.status === 'SUCCESS') {
+              self.$message({
+                message: '新增算法配置成功!',
+                type: 'success'
+              })
+              self.refreshTable()
+            } else {
+              self.showErrorMessage(res.errorCode)
+            }
+          }).catch(err => {
+            console.log('新增算法配置出错,data='+JSON.stringify(data))
+            console.log(err)
+          })
+        } else {
+          return false
+        }
+      })
     },
     doUpdate() {
-      //todo
-      alert('修改配置')
+      let self = this
+      this.$refs['configForm'].validate((valid) => {
+        if (valid) {
+          self.editDialog.visible = false
+          let data = {
+            id: self.editForm.id,
+            deviceId: self.editForm.deviceId,
+            cameraId: self.editForm.cameraId,
+            aiTypeArray: self.editForm.aiTypeArray
+          }
+          configService.updateData(data).then(res => {
+            if (res.status === 'SUCCESS') {
+              self.$message({
+                message: '修改算法配置成功!',
+                type: 'success'
+              })
+              self.refreshTable()
+            } else {
+              self.showErrorMessage(res.errorCode)
+            }
+          }).catch(err => {
+            console.log('修改算法配置出错,data='+JSON.stringify(data))
+            console.log(err)
+          })
+        } else {
+          return false
+        }
+      })
     },
     showErrorMessage(errorCode) {
-      //todo 修改对应错误码
       let message = '未知错误'
       if (errorCode != null) {
         switch (errorCode) {
-          case 100201: 
-            message = '设备数据不存在' 
+          case 100301: 
+            message = '算法配置数据不存在' 
             break
-          case 100202:
-            message = '设备名称重复'
+          case 100302:
+            message = '该设备已配置摄像头算法'
             break
           default: message = '未知错误码：'+errorCode
         }
