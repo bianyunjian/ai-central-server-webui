@@ -6,7 +6,7 @@
       </div>
       <div class="logo-title">艾信智慧医疗AI智能平台</div>
       <div class="user-info">
-        欢迎你，{{currentUser.userName}}
+        欢迎你，{{currentUser.displayName}}
         <el-link type="primary" @click="logOut(true)">退出</el-link>
       </div>
     </el-header>
@@ -74,7 +74,7 @@ export default {
       asideMenuWidth: "195px",
       isCollapse: false,
       defaultOpeneds: ["1"],
-      currentUser: { userName: "" },
+      currentUser: { userName: "" ,displayName:""},
 
       menuConfig: []
     };
@@ -92,6 +92,7 @@ export default {
         d = JSON.parse(d);
         if (d && d.userName) {
           this.currentUser.userName = d.userName;
+          this.currentUser.displayName=d.displayName;
           this.refreshMenuConfig(d, window.MENU_CONFIG);
         }
       } else {
@@ -112,13 +113,13 @@ export default {
           removeAccessToken();
           removeRefreshToken();
           removeUserData();
-          this.$router.push("Login");
+          this.$router.push("/Login");
         });
       } else {
         removeAccessToken();
         removeRefreshToken();
         removeUserData();
-        this.$router.push("Login");
+        this.$router.push("/Login");
       }
     },
     toggleMenuCollapse() {
@@ -218,7 +219,7 @@ export default {
   background: #fff;
   text-align: center;
   margin: 0px;
-  /* TODO  */
+  
   padding: 0px;
   /* border-radius: 4px; */
   box-shadow: rgba(0, 0, 0, 0.05) 1px 0px 4px;
