@@ -25,90 +25,93 @@
   </div>
 </template>
 <script>
+import eventService from '@/api/eventData'
+
 export default {
   name: 'RealtimeDataTable',
   data() {
     return {
+      tableData: [],
       // 测试数据
-      tableData: [{
-        eventId: 2,
-        deviceId: 2,
-        cameraId: 1,
-        eventType: "garbage",
-        eventTypeValue: 2,
-        eventTime: "2020-07-24T08:13:57.555Z",
-        description: "垃圾未分类",
-        eventImagePath: "/eventImage/fff.jpg",
-        deviceName: "device02",
-        cameraName: "byj-测试相机(萤石云)",
-        firstMerge: [4, 1],
-        secondMerge: [3, 1]
-      },{
-        eventId: 2,
-        deviceId: 2,
-        cameraId: 1,
-        eventType: "garbage",
-        eventTypeValue: 2,
-        eventTime: "2020-07-24T08:13:57.555Z",
-        description: "垃圾未分类",
-        eventImagePath: "/eventImage/fff.jpg",
-        deviceName: "device02",
-        cameraName: "byj-测试相机(萤石云)",
-        firstMerge: [0, 0],
-        secondMerge: [0, 0]
-      },{
-        eventId: 2,
-        deviceId: 2,
-        cameraId: 1,
-        eventType: "garbage",
-        eventTypeValue: 2,
-        eventTime: "2020-07-24T08:13:57.555Z",
-        description: "垃圾未分类",
-        eventImagePath: "/eventImage/fff.jpg",
-        deviceName: "device02",
-        cameraName: "byj-测试相机(萤石云)",
-        firstMerge: [0, 0],
-        secondMerge: [0, 0]
-      },{
-        eventId: 2,
-        deviceId: 2,
-        cameraId: 1,
-        eventType: "garbage",
-        eventTypeValue: 2,
-        eventTime: "2020-07-24T08:13:57.555Z",
-        description: "垃圾未分类",
-        eventImagePath: "/eventImage/fff.jpg",
-        deviceName: "device02",
-        cameraName: "byj-测试相机(萤石云)",
-        firstMerge: [0, 0],
-        secondMerge: [1, 1]
-      },{
-        eventId: 2,
-        deviceId: 2,
-        cameraId: 1,
-        eventType: "garbage",
-        eventTypeValue: 2,
-        eventTime: "2020-07-24T08:13:57.555Z",
-        description: "垃圾未分类",
-        eventImagePath: "/eventImage/fff.jpg",
-        deviceName: "device02",
-        cameraName: "byj-测试相机(萤石云)",
-        firstMerge: [2, 1],
-        secondMerge: [1, 1]
-      },{
-        eventId: 2,
-        deviceId: 2,
-        cameraId: 1,
-        eventType: "garbage",
-        eventTypeValue: 2,
-        eventTime: "2020-07-24T08:13:57.555Z",
-        description: "垃圾未分类",
-        eventImagePath: "/eventImage/fff.jpg",
-        deviceName: "device02",
-        cameraName: "byj-测试相机(萤石云)",
-        firstMerge: [0, 0],
-        secondMerge: [1, 1]
-      }],
+      // tableData: [{
+      //   eventId: 2,
+      //   deviceId: 2,
+      //   cameraId: 1,
+      //   eventType: "garbage",
+      //   eventTypeValue: 2,
+      //   eventTime: "2020-07-24T08:13:57.555Z",
+      //   description: "垃圾未分类",
+      //   eventImagePath: "/eventImage/fff.jpg",
+      //   deviceName: "device02",
+      //   cameraName: "byj-测试相机(萤石云)",
+      //   firstMerge: [4, 1],
+      //   secondMerge: [3, 1]
+      // },{
+      //   eventId: 2,
+      //   deviceId: 2,
+      //   cameraId: 1,
+      //   eventType: "garbage",
+      //   eventTypeValue: 2,
+      //   eventTime: "2020-07-24T08:13:57.555Z",
+      //   description: "垃圾未分类",
+      //   eventImagePath: "/eventImage/fff.jpg",
+      //   deviceName: "device02",
+      //   cameraName: "byj-测试相机(萤石云)",
+      //   firstMerge: [0, 0],
+      //   secondMerge: [0, 0]
+      // },{
+      //   eventId: 2,
+      //   deviceId: 2,
+      //   cameraId: 1,
+      //   eventType: "garbage",
+      //   eventTypeValue: 2,
+      //   eventTime: "2020-07-24T08:13:57.555Z",
+      //   description: "垃圾未分类",
+      //   eventImagePath: "/eventImage/fff.jpg",
+      //   deviceName: "device02",
+      //   cameraName: "byj-测试相机(萤石云)",
+      //   firstMerge: [0, 0],
+      //   secondMerge: [0, 0]
+      // },{
+      //   eventId: 2,
+      //   deviceId: 2,
+      //   cameraId: 1,
+      //   eventType: "garbage",
+      //   eventTypeValue: 2,
+      //   eventTime: "2020-07-24T08:13:57.555Z",
+      //   description: "垃圾未分类",
+      //   eventImagePath: "/eventImage/fff.jpg",
+      //   deviceName: "device02",
+      //   cameraName: "byj-测试相机(萤石云)",
+      //   firstMerge: [0, 0],
+      //   secondMerge: [1, 1]
+      // },{
+      //   eventId: 2,
+      //   deviceId: 2,
+      //   cameraId: 1,
+      //   eventType: "garbage",
+      //   eventTypeValue: 2,
+      //   eventTime: "2020-07-24T08:13:57.555Z",
+      //   description: "垃圾未分类",
+      //   eventImagePath: "/eventImage/fff.jpg",
+      //   deviceName: "device02",
+      //   cameraName: "byj-测试相机(萤石云)",
+      //   firstMerge: [2, 1],
+      //   secondMerge: [1, 1]
+      // },{
+      //   eventId: 2,
+      //   deviceId: 2,
+      //   cameraId: 1,
+      //   eventType: "garbage",
+      //   eventTypeValue: 2,
+      //   eventTime: "2020-07-24T08:13:57.555Z",
+      //   description: "垃圾未分类",
+      //   eventImagePath: "/eventImage/fff.jpg",
+      //   deviceName: "device02",
+      //   cameraName: "byj-测试相机(萤石云)",
+      //   firstMerge: [0, 0],
+      //   secondMerge: [1, 1]
+      // }],
       tableQuery: {
         deviceName: ''
       },
@@ -120,7 +123,6 @@ export default {
     }
   },
   mounted() {
-    // this.changePage(1)
   },
   computed: {},
   methods: {
@@ -137,22 +139,71 @@ export default {
     refreshTable() {
       let self = this
       let data = {
-        deviceName: ''
+        deviceName: self.tableQuery.deviceName
       }
-      // eventService.getRealtimeData(data).then(res => {
-      //   if (res.errorCode == 0) {
-      //     self.tableData = res.data.list
-      //     self.tablePage.total = res.data.total
-      //   }
-      // }).catch(err => {
-      //   console.log('查询事件实时数据出错,data='+JSON.stringify(data))
-      //   console.log(err)
-      // })
+      eventService.getRealtimeData(data).then(res => {
+        if (res.errorCode == 0) {
+          console.log(res.data)
+          let originList = res.data
+          if (originList == null || originList.length === 0) {
+            console.log('未能获取实时数据')
+          } else {
+            let tableData = []
+            for (let i=0, len=originList.length; i<len; i++) {
+              let dev = originList[i]
+              let camSize = dev.cameraList.length
+              for (let j=0, len1=camSize; j<len1; j++) {
+                let cam = dev.cameraList[j]
+                let evtSize = cam.eventList.length
+                let secondMerge = [evtSize, 1]
+                let firstMerge = [evtSize * camSize, 1]
+                for (let k=0, len2=evtSize; k<len2; k++) {
+                  let event = cam.eventList[k]
+                  let data = {
+                    deviceId: dev.deviceId,
+                    deviceName: dev.deviceName,
+                    cameraId: cam.cameraId,
+                    cameraName: cam.cameraName
+                  }
+                  if (k==0) {
+                    data.firstMerge = firstMerge
+                    data.secondMerge = secondMerge
+                  } else {
+                    data.firstMerge = [0, 0]
+                    data.secondMerge = [0, 0]
+                  }
+                  data.eventType = event.eventType
+                  data.eventTypeValue = event.eventTypeValue
+                  data.eventTime = event.eventTime
+                  data.description = event.description
+
+                  tableData.push(data)
+                }
+              }
+            }
+            // console.log(tableData)
+            self.tableData = tableData
+          }
+        }
+      }).catch(err => {
+        console.log('查询事件实时数据出错,data='+JSON.stringify(data))
+        console.log(err)
+      })
     },
     changePage(page) {
-      this.tablePage.pageNum = page
-      this.refreshTable()
-    }
+      // 检查是否输入设备名称
+      if (this.tableQuery.deviceName == null || this.tableQuery.deviceName == '') {
+        this.$message({
+          message: '请先输入设备名称',
+          type: 'warning'
+        })
+        return false
+      } else {
+        this.tablePage.pageNum = page
+        this.refreshTable()
+      }
+    },
+   
   }
 }
 </script>

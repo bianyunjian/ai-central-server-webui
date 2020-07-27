@@ -8,7 +8,7 @@
           </el-input>
           <span>查询时间：</span>
           <el-date-picker
-            v-model="tableQuery.timeRange"
+            v-model="tableQuery.timeDate"
             type="datetimerange"
             :picker-options="timePickerOptions"
             range-separator="至"
@@ -50,33 +50,34 @@ export default {
   name: 'HistoryDataTable',
   data() {
     return {
+      tableData: [],
       // 测试数据
-      tableData: [{
-        eventId: 1,
-        deviceId: 1,
-        cameraId: 1,
-        eventType: "box",
-        eventTypeValue: 1,
-        eventTime: "2020-07-24T08:13:57.555Z",
-        description: '安全防护周转箱',
-        eventImagePath: "/eventImage/sx.jpg",
-        deviceName: "device01",
-        cameraName: "测试相机2"
-      },{
-        eventId: 2,
-        deviceId: 2,
-        cameraId: 1,
-        eventType: "garbage",
-        eventTypeValue: 2,
-        eventTime: "2020-07-24T08:13:57.555Z",
-        description: "垃圾未分类",
-        eventImagePath: "/eventImage/fff.jpg",
-        deviceName: "device02",
-        cameraName: "byj-测试相机(萤石云)"
-      }],
+      // tableData: [{
+      //   eventId: 1,
+      //   deviceId: 1,
+      //   cameraId: 1,
+      //   eventType: "box",
+      //   eventTypeValue: 1,
+      //   eventTime: "2020-07-24T08:13:57.555Z",
+      //   description: '安全防护周转箱',
+      //   eventImagePath: "/eventImage/sx.jpg",
+      //   deviceName: "device01",
+      //   cameraName: "测试相机2"
+      // },{
+      //   eventId: 2,
+      //   deviceId: 2,
+      //   cameraId: 1,
+      //   eventType: "garbage",
+      //   eventTypeValue: 2,
+      //   eventTime: "2020-07-24T08:13:57.555Z",
+      //   description: "垃圾未分类",
+      //   eventImagePath: "/eventImage/fff.jpg",
+      //   deviceName: "device02",
+      //   cameraName: "byj-测试相机(萤石云)"
+      // }],
       tableQuery: {
         deviceName: '',
-        timeRange: ''
+        timeDate: []
       },
       tablePage: {
         pageNum: 1,
@@ -113,12 +114,14 @@ export default {
     }
   },
   mounted() {
-    this.changePage(1)
+    // this.changePage(1)
   },
   computed: {},
   methods: {
     refreshTable() {
       let self = this
+      let startTime = self.tableQuery.timeDate[0] == null ? null : self.dateToString(self.tableQuery.timeDate[0])
+      let endTime = self.tableQuery.timeDate[1] == null ? null : self.dateToString(self.tableQuery.timeDate[1])
       let data = {
         pagedParams: {
           pageNum: self.tablePage.pageNum,
@@ -126,9 +129,8 @@ export default {
         },
         queryParams: {
           deviceName: self.tableQuery.deviceName,
-          // todo timeRange时间参数需要分别转为字符串
-          startTime: '',
-          endTime: ''
+          startTime: startTime,
+          endTime: endTime
         }
       }
       console.log(this.tableQuery)
@@ -145,6 +147,24 @@ export default {
     changePage(page) {
       this.tablePage.pageNum = page
       this.refreshTable()
+    },
+    dateToString(date) {
+      let year = date.getFullYear()
+      let month = (date.getMonth() + 1).toString()
+      let day = (date.getDate()).toString()
+      if (month.length === 1) {
+        month = '0'+month
+      }
+      if (day.length === 1) {
+        day = '0'+day
+      }
+      let hour = date.getHours()
+      hour = hour < 10 ? ('0' + hour) : hour
+      let minute = date.getMinutes()
+      minute = minute < 10 ? ('0' + minute) : minute
+      let second = date.getSeconds()
+      second = second < 10 ? ('0' + second) : second
+      return year+'-'+month+'-'+day+' '+hour+':'+minute+':'+second
     }
   }
 }
