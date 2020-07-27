@@ -113,13 +113,13 @@ export default {
           removeAccessToken();
           removeRefreshToken();
           removeUserData();
-          this.$router.push("Login");
+          this.$router.push("/Login");
         });
       } else {
         removeAccessToken();
         removeRefreshToken();
         removeUserData();
-        this.$router.push("Login");
+        this.$router.push("/Login");
       }
     },
     toggleMenuCollapse() {
