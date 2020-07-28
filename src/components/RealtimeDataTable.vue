@@ -143,10 +143,10 @@ export default {
       }
       eventService.getRealtimeData(data).then(res => {
         if (res.errorCode == 0) {
-          console.log(res.data)
           let originList = res.data
           if (originList == null || originList.length === 0) {
             console.log('未能获取实时数据')
+            console.log(res)
           } else {
             let tableData = []
             for (let i=0, len=originList.length; i<len; i++) {
@@ -183,6 +183,13 @@ export default {
             }
             // console.log(tableData)
             self.tableData = tableData
+            if (tableData.length === 0) {
+              console.log(originList)
+              this.$message({
+                message: '该设备下暂无实时事件',
+                type: 'warning'
+              })
+            }
           }
         }
       }).catch(err => {

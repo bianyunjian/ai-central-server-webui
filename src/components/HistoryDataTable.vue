@@ -25,9 +25,17 @@
           <el-table-column prop="cameraName" label="摄像头"></el-table-column>
           <el-table-column prop="eventType" label="事件类型"></el-table-column>
           <el-table-column prop="eventTypeValue" label="事件值"></el-table-column>
-          <el-table-column prop="eventTime" label="时间"></el-table-column>
-          <el-table-column prop="description" label="描述"></el-table-column>
-          <el-table-column prop="eventImagePath" label="关联图片"></el-table-column>
+          <el-table-column prop="eventTime" label="时间" width="200"></el-table-column>
+          <el-table-column prop="description" label="描述" width="300"></el-table-column>
+          <el-table-column prop="eventImagePath" label="关联图片">
+            <template slot-scope="scope">
+              <el-link
+                type="primary"
+                :href="scope.row.eventImagePath"
+                target="_blank"
+              >点击查看</el-link>
+            </template>
+          </el-table-column>
         </el-table>
       </el-main>
       <el-footer>
@@ -60,7 +68,7 @@ export default {
       //   eventTypeValue: 1,
       //   eventTime: "2020-07-24T08:13:57.555Z",
       //   description: '安全防护周转箱',
-      //   eventImagePath: "/eventImage/sx.jpg",
+      //   eventImagePath: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595915030509&di=749d541bae695680048a0c2e0615640a&imgtype=0&src=http%3A%2F%2Fpicture.ik123.com%2Fuploads%2Fallimg%2F181106%2F12-1Q106154J7.jpg",
       //   deviceName: "device01",
       //   cameraName: "测试相机2"
       // },{
@@ -71,7 +79,7 @@ export default {
       //   eventTypeValue: 2,
       //   eventTime: "2020-07-24T08:13:57.555Z",
       //   description: "垃圾未分类",
-      //   eventImagePath: "/eventImage/fff.jpg",
+      //   eventImagePath: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595915205450&di=736c0ce5a26e01e288c0a8ba3ab45499&imgtype=0&src=http%3A%2F%2Fcar0.autoimg.cn%2Fcar%2Fupload%2F2015%2F5%2F14%2Fv_201505141101295103686112.jpg",
       //   deviceName: "device02",
       //   cameraName: "byj-测试相机(萤石云)"
       // }],
