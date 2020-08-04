@@ -270,11 +270,11 @@ export default {
       let message = '未知错误'
       if (errorCode != null) {
         switch (errorCode) {
-          case 100301: 
-            message = '算法配置数据不存在' 
+          case 100401: 
+            message = '人员数据不存在' 
             break
-          case 100302:
-            message = '该设备已配置摄像头算法'
+          case 100402:
+            message = '人员名称重复'
             break
           default: message = '未知错误码：'+errorCode
         }
