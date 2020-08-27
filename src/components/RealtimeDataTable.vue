@@ -2,7 +2,7 @@
   <div>
     <el-container>
       <el-header style="padding-top:20px;">
-        <div style="text-align:left;">
+        <div style="text-align:left;float:left;">
           <el-input
             v-model="tableQuery.deviceName"
             style="width:200px;"
@@ -10,6 +10,13 @@
             clearable
           ></el-input>
           <el-button type="primary" icon="el-icon-search" @click="changePage(1)">查询</el-button>
+        </div>
+        <div style="text-align:left;float:left; margin-left:50px;line-height:40px;color:#646464">
+          <el-switch
+            v-model="enableAutoIntervalRefresh"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+          ></el-switch>自动刷新
         </div>
       </el-header>
       <el-main>
@@ -121,17 +128,26 @@ export default {
         pageSize: 10,
         total: 100,
       },
+      enableAutoIntervalRefresh: false,
+      autoRefreshInterval: null,
     };
   },
   mounted() {
     let self = this;
-    setInterval(() => {
+    self.autoRefreshInterval = setInterval(() => {
       var deviceName = self.tableQuery.deviceName;
-      if (deviceName) {
+      if (deviceName && self.enableAutoIntervalRefresh) {
         self.refreshTable();
       }
     }, 1000);
   },
+  destroyed() {
+    let self = this;
+    if (self.autoRefreshInterval) {
+      clearInterval(self.autoRefreshInterval);
+    }
+  },
+
   computed: {},
   methods: {
     objectSpanMethod({ row, column, rowIndex, columnIndex }) {
@@ -196,7 +212,7 @@ export default {
               if (tableData.length === 0) {
                 console.log(originList);
                 this.$message({
-                  message: "该设备下暂无实时事件",
+                  message: "暂无实时事件",
                   type: "warning",
                 });
               }

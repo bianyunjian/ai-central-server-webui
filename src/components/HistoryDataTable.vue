@@ -3,9 +3,12 @@
     <el-container>
       <el-header style="padding-top:20px;">
         <div style="text-align:left;">
-          <el-input v-model="tableQuery.deviceName" style="width:200px;" 
-            placeholder="请输入设备名称" clearable>
-          </el-input>
+          <el-input
+            v-model="tableQuery.deviceName"
+            style="width:200px;"
+            placeholder="请输入设备名称"
+            clearable
+          ></el-input>
           <span>查询时间：</span>
           <el-date-picker
             v-model="tableQuery.timeDate"
@@ -29,33 +32,31 @@
           <el-table-column prop="description" label="描述" width="300"></el-table-column>
           <el-table-column prop="eventImagePath" label="关联图片">
             <template slot-scope="scope">
-              <el-link
-                type="primary"
-                :href="scope.row.eventImagePath"
-                target="_blank"
-              >点击查看</el-link>
+              <el-link type="primary" :href="scope.row.eventImagePath" target="_blank">点击查看</el-link>
             </template>
           </el-table-column>
         </el-table>
       </el-main>
       <el-footer>
         <div style="text-align:left;">
-          <el-pagination background layout="prev, pager, next" 
-            :page-size="tablePage.pageSize" 
-            :current-page.sync="tablePage.pageNum" 
-            :total="tablePage.total" 
-            @current-change="changePage">
-          </el-pagination>
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :page-size="tablePage.pageSize"
+            :current-page.sync="tablePage.pageNum"
+            :total="tablePage.total"
+            @current-change="changePage"
+          ></el-pagination>
         </div>
       </el-footer>
     </el-container>
   </div>
 </template>
 <script>
-import eventService from '@/api/eventData'
+import eventService from "@/api/eventData";
 
 export default {
-  name: 'HistoryDataTable',
+  name: "HistoryDataTable",
   data() {
     return {
       tableData: [],
@@ -84,42 +85,46 @@ export default {
       //   cameraName: "byj-测试相机(萤石云)"
       // }],
       tableQuery: {
-        deviceName: '',
-        timeDate: []
+        deviceName: "",
+        timeDate: [],
       },
       tablePage: {
         pageNum: 1,
         pageSize: 10,
-        total: 100
+        total: 100,
       },
       timePickerOptions: {
-        shortcuts: [{
-          text: '最近一周',
-          onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-            picker.$emit('pick', [start, end]);
-          }
-        },{
-          text: '最近一个月',
-          onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-            picker.$emit('pick', [start, end]);
-          }
-        },{
-          text: '最近三个月',
-          onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-            picker.$emit('pick', [start, end]);
-          }
-        }]
-      }
-    }
+        shortcuts: [
+          {
+            text: "最近一周",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", [start, end]);
+            },
+          },
+          {
+            text: "最近一个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit("pick", [start, end]);
+            },
+          },
+          {
+            text: "最近三个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit("pick", [start, end]);
+            },
+          },
+        ],
+      },
+    };
   },
   mounted() {
     // this.changePage(1)
@@ -127,56 +132,82 @@ export default {
   computed: {},
   methods: {
     refreshTable() {
-      let self = this
-      let startTime = self.tableQuery.timeDate[0] == null ? null : self.dateToString(self.tableQuery.timeDate[0])
-      let endTime = self.tableQuery.timeDate[1] == null ? null : self.dateToString(self.tableQuery.timeDate[1])
+      let self = this;
+      let startTime =
+        self.tableQuery.timeDate[0] == null
+          ? null
+          : self.dateToString(self.tableQuery.timeDate[0]);
+      let endTime =
+        self.tableQuery.timeDate[1] == null
+          ? null
+          : self.dateToString(self.tableQuery.timeDate[1]);
       let data = {
         pagedParams: {
           pageNum: self.tablePage.pageNum,
-          pageSize: self.tablePage.pageSize
+          pageSize: self.tablePage.pageSize,
         },
         queryParams: {
           deviceName: self.tableQuery.deviceName,
           startTime: startTime,
-          endTime: endTime
-        }
-      }
-      console.log(this.tableQuery)
-      eventService.getHistoryData(data).then(res => {
-        if (res.errorCode == 0) {
-          self.tableData = res.data.list
-          self.tablePage.total = res.data.total
-        }
-      }).catch(err => {
-        console.log('查询事件历史数据出错,data='+JSON.stringify(data))
-        console.log(err)
-      })
+          endTime: endTime,
+        },
+      };
+      console.log(this.tableQuery);
+      eventService
+        .getHistoryData(data)
+        .then((res) => {
+          if (res.errorCode == 0) {
+            self.tableData = res.data.list;
+            self.tablePage.total = res.data.total;
+
+            self.tableData.forEach((row) => {
+              if (row.eventImagePath.indexOf(window.API_URL) == -1) {
+                row.eventImagePath = window.API_URI+"/" + row.eventImagePath;
+              }
+            });
+          }
+        })
+        .catch((err) => {
+          console.log("查询事件历史数据出错,data=" + JSON.stringify(data));
+          console.log(err);
+        });
     },
     changePage(page) {
-      this.tablePage.pageNum = page
-      this.refreshTable()
+      this.tablePage.pageNum = page;
+      this.refreshTable();
     },
     dateToString(date) {
-      let year = date.getFullYear()
-      let month = (date.getMonth() + 1).toString()
-      let day = (date.getDate()).toString()
+      let year = date.getFullYear();
+      let month = (date.getMonth() + 1).toString();
+      let day = date.getDate().toString();
       if (month.length === 1) {
-        month = '0'+month
+        month = "0" + month;
       }
       if (day.length === 1) {
-        day = '0'+day
+        day = "0" + day;
       }
-      let hour = date.getHours()
-      hour = hour < 10 ? ('0' + hour) : hour
-      let minute = date.getMinutes()
-      minute = minute < 10 ? ('0' + minute) : minute
-      let second = date.getSeconds()
-      second = second < 10 ? ('0' + second) : second
-      return year+'-'+month+'-'+day+' '+hour+':'+minute+':'+second
-    }
-  }
-}
+      let hour = date.getHours();
+      hour = hour < 10 ? "0" + hour : hour;
+      let minute = date.getMinutes();
+      minute = minute < 10 ? "0" + minute : minute;
+      let second = date.getSeconds();
+      second = second < 10 ? "0" + second : second;
+      return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day +
+        " " +
+        hour +
+        ":" +
+        minute +
+        ":" +
+        second
+      );
+    },
+  },
+};
 </script>
 <style scoped>
-
 </style>
