@@ -33,6 +33,9 @@
             </template>
           </el-table-column>
           <el-table-column prop="description" label="描述"></el-table-column>
+          <el-table-column prop="axPlcId" label="艾信PLC ID"></el-table-column>
+          <el-table-column prop="appId" label="安卓APP ID"></el-table-column>
+          <el-table-column prop="deviceGroupId" label="设备分组ID"></el-table-column>
           <el-table-column label="操作" width="100">
             <template slot-scope="scope">
               <el-link type="primary" @click="updateDevice(scope.row)" style="margin-right:10px;">修改</el-link>
@@ -96,6 +99,28 @@
             placeholder="设备相关描述"
           ></el-input>
         </el-form-item>
+        <el-form-item prop="axPlcId" label="PLC编号">
+          <el-input 
+            v-model="editForm.axPlcId"
+            autocomplete="off" 
+            placeholder="请输入PLC编号"
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="appId" label="APP编号">
+          <el-input
+            v-model="editForm.appId"
+            autocomplete="off"
+            placeholder="请输入APP编号"
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="deviceGroupId" label="分组编号">
+          <el-input
+            type="number"
+            v-model="editForm.deviceGroupId"
+            autocomplete="off"
+            placeholder="请输入分组编号"
+          ></el-input>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="editDialog.visible = false">取消</el-button>
@@ -118,13 +143,19 @@ export default {
         name: 'D001',
         status: 0,
         deviceScenario: '1',
-        description: '三楼实验室'
+        description: '三楼实验室',
+        axPlcId: "1",
+        appId: "12",
+        deviceGroupId: 1,
       },{
         id: 2,
         name: 'D002',
         status: 1,
         deviceScenario: '2',
-        description: '三楼实验室'
+        description: '三楼实验室',
+        axPlcId: "2",
+        appId: "21",
+        deviceGroupId: 1,
       }],
       tableQuery: {
         name: ''
@@ -144,7 +175,10 @@ export default {
         name: '',
         status: 0,
         deviceScenario: null,
-        description: ''
+        description: '',
+        axPlcId: null,
+        appId: null,
+        deviceGroupId: 0
       },
       editFormRules: {
         name: [
@@ -155,6 +189,15 @@ export default {
         ],
         deviceScenario: [
           {required: true, message: '必填项', trigger: 'change'}
+        ],
+        axPlcId: [
+          {required: true, message: '必填项', trigger: 'blur'}
+        ],
+        appId: [
+          {required: true, message: '必填项', trigger: 'blur'}
+        ],
+        deviceGroupId: [
+          {required: true, message: '必填项', trigger: 'blur'}
         ]
       },
       statusEnum: [
@@ -248,7 +291,10 @@ export default {
         name: row.name,
         status: row.status,
         deviceScenario: row.deviceScenario,
-        description: row.description
+        description: row.description,
+        axPlcId: row.axPlcId,
+        appId: row.appId,
+        deviceGroupId: row.deviceGroupId
       }
       this.editDialog.visible = true
     },
@@ -262,7 +308,10 @@ export default {
         name: '',
         status: 0,
         deviceScenario: null,
-        description: ''
+        description: '',
+        axPlcId: null,
+        appId: null,
+        deviceGroupId: 0
       }
     },
     deleteDevice(row) {
@@ -299,7 +348,10 @@ export default {
             name: self.editForm.name,
             status: self.editForm.status,
             scenario: self.editForm.deviceScenario,
-            description: self.editForm.description
+            description: self.editForm.description,
+            axPlcId: self.editForm.axPlcId,
+            appId: self.editForm.appId,
+            deviceGroupId: self.editForm.deviceGroupId
           }
           deviceService.addDevice(data).then(res => {
             if (res.status === 'SUCCESS') {
@@ -330,7 +382,10 @@ export default {
             name: self.editForm.name,
             status: self.editForm.status,
             scenario: self.editForm.deviceScenario,
-            description: self.editForm.description
+            description: self.editForm.description,
+            axPlcId: self.editForm.axPlcId,
+            appId: self.editForm.appId,
+            deviceGroupId: self.editForm.deviceGroupId
           }
           deviceService.updateDevice(data).then(res => {
             if (res.status === 'SUCCESS') {
