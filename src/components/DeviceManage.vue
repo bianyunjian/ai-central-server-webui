@@ -101,6 +101,7 @@
         </el-form-item>
         <el-form-item prop="axPlcId" label="PLC编号">
           <el-input 
+            type="number"
             v-model="editForm.axPlcId"
             autocomplete="off" 
             placeholder="请输入PLC编号"
@@ -108,6 +109,7 @@
         </el-form-item>
         <el-form-item prop="appId" label="APP编号">
           <el-input
+            type="number"
             v-model="editForm.appId"
             autocomplete="off"
             placeholder="请输入APP编号"
@@ -178,7 +180,7 @@ export default {
         description: '',
         axPlcId: null,
         appId: null,
-        deviceGroupId: 0
+        deviceGroupId: null
       },
       editFormRules: {
         name: [
@@ -311,7 +313,7 @@ export default {
         description: '',
         axPlcId: null,
         appId: null,
-        deviceGroupId: 0
+        deviceGroupId: null
       }
     },
     deleteDevice(row) {
