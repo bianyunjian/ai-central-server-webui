@@ -21,12 +21,14 @@
       </el-header>
       <el-main>
         <el-table :data="tableData" border style="width:100%;" :span-method="objectSpanMethod">
-          <el-table-column prop="deviceName" label="设备"></el-table-column>
-          <el-table-column prop="cameraName" label="摄像头"></el-table-column>
-          <el-table-column prop="eventType" label="实时事件"></el-table-column>
-          <el-table-column prop="eventTypeValue" label="事件值"></el-table-column>
-          <el-table-column prop="eventTime" label="发生时间"></el-table-column>
+          <el-table-column prop="deviceName" label="设备" width="200"></el-table-column>
+
+          <el-table-column prop="eventType" label="实时事件" width="100"></el-table-column>
+          <el-table-column prop="eventTypeValue" label="事件值" width="100"></el-table-column>
+          <el-table-column prop="eventTime" label="发生时间" width="180"></el-table-column>
           <el-table-column prop="description" label="事件说明"></el-table-column>
+          <el-table-column prop="deviceId" label="设备Id" width="80"></el-table-column>
+          <el-table-column prop="cameraId" label="摄像头Id" width="80"></el-table-column>
         </el-table>
       </el-main>
     </el-container>
@@ -40,86 +42,65 @@ export default {
   data() {
     return {
       tableData: [],
-      // 测试数据
-      // tableData: [{
-      //   eventId: 2,
-      //   deviceId: 2,
-      //   cameraId: 1,
-      //   eventType: "garbage",
-      //   eventTypeValue: 2,
-      //   eventTime: "2020-07-24T08:13:57.555Z",
-      //   description: "垃圾未分类",
-      //   eventImagePath: "/eventImage/fff.jpg",
-      //   deviceName: "device02",
-      //   cameraName: "byj-测试相机(萤石云)",
-      //   firstMerge: [4, 1],
-      //   secondMerge: [3, 1]
-      // },{
-      //   eventId: 2,
-      //   deviceId: 2,
-      //   cameraId: 1,
-      //   eventType: "garbage",
-      //   eventTypeValue: 2,
-      //   eventTime: "2020-07-24T08:13:57.555Z",
-      //   description: "垃圾未分类",
-      //   eventImagePath: "/eventImage/fff.jpg",
-      //   deviceName: "device02",
-      //   cameraName: "byj-测试相机(萤石云)",
-      //   firstMerge: [0, 0],
-      //   secondMerge: [0, 0]
-      // },{
-      //   eventId: 2,
-      //   deviceId: 2,
-      //   cameraId: 1,
-      //   eventType: "garbage",
-      //   eventTypeValue: 2,
-      //   eventTime: "2020-07-24T08:13:57.555Z",
-      //   description: "垃圾未分类",
-      //   eventImagePath: "/eventImage/fff.jpg",
-      //   deviceName: "device02",
-      //   cameraName: "byj-测试相机(萤石云)",
-      //   firstMerge: [0, 0],
-      //   secondMerge: [0, 0]
-      // },{
-      //   eventId: 2,
-      //   deviceId: 2,
-      //   cameraId: 1,
-      //   eventType: "garbage",
-      //   eventTypeValue: 2,
-      //   eventTime: "2020-07-24T08:13:57.555Z",
-      //   description: "垃圾未分类",
-      //   eventImagePath: "/eventImage/fff.jpg",
-      //   deviceName: "device02",
-      //   cameraName: "byj-测试相机(萤石云)",
-      //   firstMerge: [0, 0],
-      //   secondMerge: [1, 1]
-      // },{
-      //   eventId: 2,
-      //   deviceId: 2,
-      //   cameraId: 1,
-      //   eventType: "garbage",
-      //   eventTypeValue: 2,
-      //   eventTime: "2020-07-24T08:13:57.555Z",
-      //   description: "垃圾未分类",
-      //   eventImagePath: "/eventImage/fff.jpg",
-      //   deviceName: "device02",
-      //   cameraName: "byj-测试相机(萤石云)",
-      //   firstMerge: [2, 1],
-      //   secondMerge: [1, 1]
-      // },{
-      //   eventId: 2,
-      //   deviceId: 2,
-      //   cameraId: 1,
-      //   eventType: "garbage",
-      //   eventTypeValue: 2,
-      //   eventTime: "2020-07-24T08:13:57.555Z",
-      //   description: "垃圾未分类",
-      //   eventImagePath: "/eventImage/fff.jpg",
-      //   deviceName: "device02",
-      //   cameraName: "byj-测试相机(萤石云)",
-      //   firstMerge: [0, 0],
-      //   secondMerge: [1, 1]
-      // }],
+      mockdata: [
+        {
+          deviceName: "ai-device-01",
+          deviceId: 3,
+          eventList: [
+            {
+              eventType: "face",
+              eventTypeValue: 1,
+              eventTime: "2020-09-02 10:42:04",
+              description:
+                '人员通过识别{"eventTypeValue":"8","eventType":"face"}',
+              cameraId: 3,
+            },
+            {
+              eventType: "box",
+              eventTypeValue: 1,
+              eventTime: "2020-09-02 10:42:04",
+              description: "box",
+              cameraId: 3,
+            },
+          ],
+        },
+        {
+          deviceName: "ai-device-02",
+          deviceId: 2,
+          eventList: [
+            {
+              eventType: "face",
+              eventTypeValue: 2,
+              eventTime: "2020-09-02 10:42:04",
+              description:
+                '人员通过识别{"eventTypeValue":"8","eventType":"face"}',
+              cameraId: 2,
+            },
+          ],
+        },
+        {
+          deviceName: "ai-device-04",
+          deviceId: 4,
+          eventList: [
+            {
+              eventType: "face",
+              eventTypeValue: 4,
+              eventTime: "2020-09-02 10:42:04",
+              description:
+                '人员通过识别{"eventTypeValue":"8","eventType":"face"}',
+              cameraId: 4,
+            },
+            {
+              eventType: "face",
+              eventTypeValue: 4,
+              eventTime: "2020-09-02 10:42:04",
+              description:
+                '人员通过识别{"eventTypeValue":"8","eventType":"face"}',
+              cameraId: 4,
+            },
+          ],
+        },
+      ],
       tableQuery: {
         deviceName: "",
       },
@@ -151,13 +132,12 @@ export default {
   computed: {},
   methods: {
     objectSpanMethod({ row, column, rowIndex, columnIndex }) {
-      // 合并第一列
+      let self = this;
       if (columnIndex === 0) {
-        return row.firstMerge;
-      }
-      // 合并第二列
-      if (columnIndex === 1) {
-        return row.secondMerge;
+        return {
+          rowspan: row.rowSpan,
+          colspan: row.colSpan,
+        };
       }
     },
     refreshTable() {
@@ -170,6 +150,7 @@ export default {
         .then((res) => {
           if (res.errorCode == 0) {
             let originList = res.data;
+            // let originList = self.mockdata;
             if (originList == null || originList.length === 0) {
               console.log("未能获取实时数据");
               console.log(res);
@@ -177,34 +158,28 @@ export default {
               let tableData = [];
               for (let i = 0, len = originList.length; i < len; i++) {
                 let dev = originList[i];
-                let camSize = dev.cameraList.length;
-                for (let j = 0, len1 = camSize; j < len1; j++) {
-                  let cam = dev.cameraList[j];
-                  let evtSize = cam.eventList.length;
-                  let secondMerge = [evtSize, 1];
-                  let firstMerge = [evtSize * camSize, 1];
-                  for (let k = 0, len2 = evtSize; k < len2; k++) {
-                    let event = cam.eventList[k];
-                    let data = {
-                      deviceId: dev.deviceId,
-                      deviceName: dev.deviceName,
-                      cameraId: cam.cameraId,
-                      cameraName: cam.cameraName,
-                    };
-                    if (k == 0) {
-                      data.firstMerge = firstMerge;
-                      data.secondMerge = secondMerge;
-                    } else {
-                      data.firstMerge = [0, 0];
-                      data.secondMerge = [0, 0];
-                    }
-                    data.eventType = event.eventType;
-                    data.eventTypeValue = event.eventTypeValue;
-                    data.eventTime = event.eventTime;
-                    data.description = event.description;
 
-                    tableData.push(data);
+                for (let k = 0; k < dev.eventList.length; k++) {
+                  let event = dev.eventList[k];
+                  let data = {
+                    deviceId: dev.deviceId,
+                    deviceName: dev.deviceName,
+                  };
+
+                  data.eventType = event.eventType;
+                  data.eventTypeValue = event.eventTypeValue;
+                  data.eventTime = event.eventTime;
+                  data.description = event.description;
+                  data.cameraId = event.cameraId;
+
+                  if (k == 0) {
+                    data.rowSpan = dev.eventList.length;
+                    data.colSpan = 1;
+                  } else {
+                    data.rowSpan = 0;
+                    data.colSpan = 0;
                   }
+                  tableData.push(data);
                 }
               }
               // console.log(tableData)
