@@ -47,6 +47,11 @@ window.MENU_CONFIG = [
                 index: "4-1",
                 name: "人脸库管理",
                 routeName: "FaceManage"
+            },
+            {
+                index: "4-2",
+                name: "运行时设置",
+                routeName: "RuntimeManage"
             }
         ]
     },

@@ -9,6 +9,7 @@ import AiConfigManage from '@/components/AiConfigManage'
 import FaceManage from '@/components/FaceManage'
 import RealtimeDataTable from '@/components/RealtimeDataTable'
 import HistoryDataTable from '@/components/HistoryDataTable'
+import RuntimeManage from '@/components/RuntimeManage'
 Vue.use(Router)
 
 
@@ -53,6 +54,11 @@ export default new Router({
           path: '/Home/face',
           name: 'FaceManage',
           component: FaceManage
+        },
+        {
+          path: '/Home/runtime',
+          name: 'RuntimeManage',
+          component: RuntimeManage
         },
         {
           path: '/Home/realtime',
