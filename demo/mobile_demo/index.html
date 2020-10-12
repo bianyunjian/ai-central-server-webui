@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+  <meta name="format-detection" content="telephone=no"/>
+
+  <title>艾信气力式垃圾投递</title>
+
+  <style>
+    html,body,div {
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+
+  <style>
+    .main-bg {
+      background-image: url(./static/images/aixin_mobile_bg.jpg);
+      background-size: cover;
+      background-position: center;
+      /* 高斯模糊效果 */
+      filter: blur(10px);
+      -webkit-filter: blur(1px);
+      -moz-filter: blur(1px);
+      -o-filter: blur(1px);
+      -ms-filter: blur(1px);
+    }
+
+    .garbage-button{
+			width: 200px;
+			height: 60px;
+			color:white;/*字体颜色*/
+			background-color:cornflowerblue;/*按钮背景颜色*/
+			border-radius: 5px;/*让按钮变得圆滑一点*/
+			border-width: 0;/*消去按钮丑的边框*/
+			margin: 0 auto;
+      display: block;
+			outline: none;/*取消轮廓*/
+			font-family: KaiTi;/*字体设置为楷体*/
+			font-size: 20px;/*设置字体大小*/
+			text-align: center;/*字体居中*/
+			cursor: pointer;/*设置鼠标箭头手势*/
+		}
+		.garbage-button:hover{/*鼠标移动时的颜色变化*/
+			background-color: antiquewhite;
+		}
+  </style>
+</head>
+<body>
+  <div class="main-bg" style="height: calc(100vh - 100px); width: 100%;"></div>
+  <div style="height: 90px; width: 100%; padding-top: 10px;">
+    <button class="garbage-button">开始投递</button>
+  </div>
+</body>
+</html>
