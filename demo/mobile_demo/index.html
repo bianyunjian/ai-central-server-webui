@@ -7,6 +7,8 @@
 
   <title>艾信气力式垃圾投递</title>
 
+
+
   <style>
     html,body,div {
       padding: 0;
@@ -20,13 +22,12 @@
       background-size: cover;
       background-position: center;
       /* 高斯模糊效果 */
-      filter: blur(10px);
-      -webkit-filter: blur(1px);
-      -moz-filter: blur(1px);
-      -o-filter: blur(1px);
-      -ms-filter: blur(1px);
+      filter: blur(8px);
+      -webkit-filter: blur(8px);
+      -moz-filter: blur(8px);
+      -o-filter: blur(8px);
+      -ms-filter: blur(8px);
     }
-
     .garbage-button{
 			width: 200px;
 			height: 60px;
@@ -42,15 +43,67 @@
 			text-align: center;/*字体居中*/
 			cursor: pointer;/*设置鼠标箭头手势*/
 		}
-		.garbage-button:hover{/*鼠标移动时的颜色变化*/
-			background-color: antiquewhite;
-		}
+    .garbage-button:active {
+      background-color: #409eff;
+    }
+    .info-table {
+      font-size: 24px;
+      margin: 0 0 0 20px;
+    }
+    .info-table tr td:first-child {
+      text-align: right;
+    }
   </style>
 </head>
 <body>
-  <div class="main-bg" style="height: calc(100vh - 100px); width: 100%;"></div>
-  <div style="height: 90px; width: 100%; padding-top: 10px;">
-    <button class="garbage-button">开始投递</button>
+  <div  style="height: calc(100vh - 100px); width: 100%; position: relative;">
+    <div class="main-bg" style="width: 100%; height: 100%; position: absolute; left: 0; top: 0;">
+    </div>
+    <div id="area_info" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 99;">
+      <div style="padding-top: 20px; width: 300px; height: 180px; border: 5px solid white; border-radius: 5px; background:rgba(255, 255, 255, 0.8); margin: 24vh auto 0 auto;">
+        <table class="info-table">
+          <tr>
+            <td>当前垃圾：</td>
+            <td>湿垃圾</td>
+          </tr>
+          <tr>
+            <td>当前投递口：</td>
+            <td>31栋3楼01</td>
+          </tr>
+          <tr>
+            <td>身份认证：</td>
+            <td>保洁</td>
+          </tr>
+          <tr>
+            <td>投递人姓名：</td>
+            <td>王芬</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div id="area_open" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 99;">
+      <!-- 显示投递口已打开 -->
+      <div style="width: 240px; height: 120px; border: 5px solid white; border-radius: 5px; background:rgba(255, 255, 255, 0.8); margin: 24vh auto 0 auto; font-size: 30px; color: darkgreen; text-align: center; display: none;">
+        <span>投递口已打开</span><br/><span>请投递垃圾...</span>
+      </div>
+    </div>
   </div>
+  <div style="height: 90px; width: 100%; padding-top: 10px;">
+    <button class="garbage-button" onclick="startPush()">开始投递</button>
+  </div>
+
+  <script src="static/jquery.min.js"></script>
+  <script src="static/layer/layer.js"></script>
+
+  <script>
+    function startPush() {
+      let loading = layer.load(1, {
+        shade: [0.6, '#000000']
+      })
+      setTimeout(() => {
+        layer.close(loading)
+      }, 3000)
+    }
+  </script>
 </body>
 </html>
