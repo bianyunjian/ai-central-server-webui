@@ -4,11 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
   <meta name="format-detection" content="telephone=no"/>
-
   <title>艾信气力式垃圾投递</title>
-
-
-
   <style>
     html,body,div {
       padding: 0;
@@ -28,11 +24,15 @@
       -o-filter: blur(8px);
       -ms-filter: blur(8px);
     }
+    .info-card {
+      border: 5px solid white; 
+      border-radius: 5px; 
+      background:rgba(255, 255, 255, 0.8);
+    }
     .garbage-button{
 			width: 200px;
 			height: 60px;
 			color:white;/*字体颜色*/
-			background-color:cornflowerblue;/*按钮背景颜色*/
 			border-radius: 5px;/*让按钮变得圆滑一点*/
 			border-width: 0;/*消去按钮丑的边框*/
 			margin: 0 auto;
@@ -43,8 +43,11 @@
 			text-align: center;/*字体居中*/
 			cursor: pointer;/*设置鼠标箭头手势*/
 		}
-    .garbage-button:active {
-      background-color: #409eff;
+    .start-push {
+      background-color:cornflowerblue;
+    }
+    .close-push {
+      background-color:grey;
     }
     .info-table {
       font-size: 24px;
@@ -60,7 +63,7 @@
     <div class="main-bg" style="width: 100%; height: 100%; position: absolute; left: 0; top: 0;">
     </div>
     <div id="area_info" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 99;">
-      <div style="padding-top: 20px; width: 300px; height: 180px; border: 5px solid white; border-radius: 5px; background:rgba(255, 255, 255, 0.8); margin: 24vh auto 0 auto;">
+      <div class="info-card" style="padding-top: 20px; width: 300px; height: 180px;  margin: 24vh auto 0 auto;">
         <table class="info-table">
           <tr>
             <td>当前垃圾：</td>
@@ -81,15 +84,15 @@
         </table>
       </div>
     </div>
-    <div id="area_open" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 99;">
+    <div id="area_open" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 99;  display: none;">
       <!-- 显示投递口已打开 -->
-      <div style="width: 240px; height: 120px; border: 5px solid white; border-radius: 5px; background:rgba(255, 255, 255, 0.8); margin: 24vh auto 0 auto; font-size: 30px; color: darkgreen; text-align: center; display: none;">
+      <div class="info-card" style="padding-top: 20px; width: 240px; height: 110px; margin: 24vh auto 0 auto; font-size: 30px; color: darkgreen; text-align: center; ">
         <span>投递口已打开</span><br/><span>请投递垃圾...</span>
       </div>
     </div>
   </div>
   <div style="height: 90px; width: 100%; padding-top: 10px;">
-    <button class="garbage-button" onclick="startPush()">开始投递</button>
+    <button id="garbage_btn" class="garbage-button start-push" onclick="startPush()">开始投递</button>
   </div>
 
   <script src="static/jquery.min.js"></script>
@@ -97,13 +100,27 @@
 
   <script>
     function startPush() {
-      let loading = layer.load(1, {
-        shade: [0.6, '#000000']
+      let loading = layer.msg(1, {
+        icon: 16,
+        shade: [0.6, '#000000'],
+        content: '检测中...',
+        time: false
       })
       setTimeout(() => {
         layer.close(loading)
+        // 更换信息牌
+        let areaInfo = document.getElementById('area_info')
+        areaInfo.style.setProperty('display', 'none')
+        let areaOpen = document.getElementById('area_open')
+        areaOpen.style.setProperty('display', 'block')
+        // 更换按钮样式
+        let btn = document.getElementById('garbage_btn')
+        btn.setAttribute('disabled', 'disabled')
+        btn.classList.replace('start-push', 'close-push')
       }, 3000)
     }
+
+
   </script>
 </body>
 </html>
